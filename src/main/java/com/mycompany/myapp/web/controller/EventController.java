@@ -184,10 +184,6 @@ public class EventController {
 		for(int i = 0; i < eas.size(); i++){
 			joinEvents.add(eas.get(i).getEvent());
 		}
-		
-		for (int i = 0; i < events.size(); i++) {
-			System.out.println(events.get(i).getSummary());
-		}
 
 		mav.addObject("events", events);
 		mav.addObject("joinEvents", joinEvents);

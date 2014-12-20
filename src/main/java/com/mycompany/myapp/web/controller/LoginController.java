@@ -50,10 +50,10 @@ public class LoginController {
         this.calendarService.createUser(user);
          
         // for testing purpose:
-        System.out.println("id: " + user.getId());
-        System.out.println("name: " + user.getName());
-        System.out.println("password: " + user.getPassword());
-        System.out.println("email: " + user.getEmail());
+//        System.out.println("id: " + user.getId());
+//        System.out.println("name: " + user.getName());
+//        System.out.println("password: " + user.getPassword());
+//        System.out.println("email: " + user.getEmail());
          
         return "/users/signupResult";
     }
