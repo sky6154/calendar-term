@@ -126,7 +126,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 	@Override
 	public void updateCalendarUser(CalendarUser calendarUser) {
 		// TODO Auto-generated method stub
-		String sql_query = "update calendar_users set name = ?, password = ?, email = ?";
-		this.jdbcTemplate.update(sql_query, new Object[] {calendarUser.getName(), calendarUser.getPassword(), calendarUser.getEmail()});
+		String sql_query = "update calendar_users set name = ?, password = ?, email = ? where id = ?";
+		this.jdbcTemplate.update(sql_query, new Object[] {calendarUser.getName(), calendarUser.getPassword(), calendarUser.getEmail(), calendarUser.getId()});
 	}
 }
