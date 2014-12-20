@@ -46,6 +46,8 @@ public interface CalendarService {
 
     public void deleteEventAttendee(int id);
     
+    public void deleteEventAttendeeByEventId(int eventId);
+    
     public void deleteAllEventAttendees();
     
 	/* upgradeEventLevels */

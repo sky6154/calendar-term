@@ -114,4 +114,10 @@ public class JdbcEventAttendeeDao implements EventAttendeeDao {
 		String sql_query = "select * from events_attendees where event_id = ?";
 		return this.jdbcTemplate.query(sql_query, new Object[] {eventId}, userRowMapper);
 	}
+
+	@Override
+	public void deleteEventAttendeeByEventId(int eventId) {
+		String sql_query = "delete from events_attendees where event_id = ?";
+		this.jdbcTemplate.update(sql_query, new Object[] {eventId});
+	}
 }

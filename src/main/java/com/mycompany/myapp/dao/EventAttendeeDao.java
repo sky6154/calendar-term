@@ -16,5 +16,7 @@ public interface EventAttendeeDao {
 
     public void deleteEventAttendee(int id);
     
+    public void deleteEventAttendeeByEventId(int eventId);
+    
     public void deleteAll();
 }

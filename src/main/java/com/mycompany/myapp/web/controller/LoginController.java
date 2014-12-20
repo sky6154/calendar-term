@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.mycompany.myapp.domain.CalendarUser;
 import com.mycompany.myapp.domain.EventLevel;
+import com.mycompany.myapp.domain.UserInfo;
 import com.mycompany.myapp.service.CalendarService;
 
 @Controller
@@ -34,7 +35,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String register(Model model) {
+	public String register(@ModelAttribute("userInfo") UserInfo userInfo, Model model) {
 		CalendarUser userForm = new CalendarUser();    
 		model.addAttribute("userForm", userForm);
 
@@ -42,7 +43,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/signupResult", method = RequestMethod.POST)
-    public String processRegistration(@ModelAttribute("userForm") CalendarUser user, Model model) {
+    public String processRegistration(@ModelAttribute("userInfo") UserInfo userInfo, @ModelAttribute("userForm") CalendarUser user, Model model) {
         user.setLevel(EventLevel.NORMAL.intValue());
         user.setLogin(0);
         user.setRecommend(0);

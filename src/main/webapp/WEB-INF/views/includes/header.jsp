@@ -29,7 +29,7 @@
 
 				<sec:authorize
 					access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
-					<li><form:form id="myEventsLink" action="events/my"
+					<li><form:form id="myEventsLink" action="/calendar-dev/events/my"
 							method="post" commandName="userInfo">
 							<c:if test="${pageContext.request.userPrincipal.name != null}">
 								<form:hidden path="name"

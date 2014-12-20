@@ -43,7 +43,7 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "/createResult", method = RequestMethod.POST)
-	public String processEvent(
+	public String processEvent(@ModelAttribute("userInfo") UserInfo userInfo,
 			@ModelAttribute("eventForm") EventForm eventForm, Model model) {
 		Event newEvent = new Event();
 
@@ -93,7 +93,8 @@ public class EventController {
 
 	// view
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView viewEvent(ModelAndView mav) {
+	public ModelAndView viewEvent(
+			@ModelAttribute("userInfo") UserInfo userInfo, ModelAndView mav) {
 		EventsForm eventsForm = new EventsForm();
 		List<Event> allEvents = new ArrayList<Event>();
 		List<EventInfo> eventInfoes = new ArrayList<EventInfo>();
@@ -115,13 +116,14 @@ public class EventController {
 	}
 
 	// event join
-	@RequestMapping(value = "/join", method = RequestMethod.POST)
-	public ModelAndView viewEvent(ModelAndView mav,
+	@RequestMapping(value = "/process", method = RequestMethod.POST)
+	public ModelAndView viewEvent(
+			@ModelAttribute("userInfo") UserInfo userInfo, ModelAndView mav,
 			@ModelAttribute("eventsForm") EventsForm eventsForm) {
 
 		List<Integer> eventList = new ArrayList<Integer>();
 		List<String> nameList = new ArrayList<String>();
-		
+
 		String val = eventsForm.getEventList();
 
 		String temp[] = val.split(":");
@@ -129,18 +131,17 @@ public class EventController {
 		for (int i = 1; i < temp.length; i++) {
 			eventList.add(Integer.parseInt(temp[i]));
 		}
-		
+
 		for (int i = 0; i < eventList.size(); i++) {
-			nameList.add(calendarService.getEvent(eventList.get(i)).getSummary());
+			nameList.add(calendarService.getEvent(eventList.get(i))
+					.getSummary());
 		}
 
 		if (eventsForm.getFlag().equals("join")) {
-			System.out.println("join 클릭됨");
 			CalendarUser currentUser = calendarService
 					.findUserByUserId(eventsForm.getUserId());
 
 			for (int i = 0; i < eventList.size(); i++) {
-				System.out.println("size : " + eventList.size());
 				EventAttendee addEventAttendee = new EventAttendee();
 				addEventAttendee.setAttendee(currentUser);
 				addEventAttendee.setEvent(calendarService.getEvent(eventList
@@ -154,6 +155,7 @@ public class EventController {
 			mav.addObject("nameList", nameList);
 		} else if (eventsForm.getFlag().equals("delete")) {
 			for (int i = 0; i < eventList.size(); i++) {
+				calendarService.deleteEventAttendeeByEventId(eventList.get(i));
 				calendarService.deleteEvent(eventList.get(i));
 			}
 
@@ -161,7 +163,7 @@ public class EventController {
 			mav.addObject("msg", "event가 성공적으로 삭제되었습니다.");
 			mav.addObject("nameList", nameList);
 		}
-		
+
 		return mav;
 	}
 
@@ -174,14 +176,21 @@ public class EventController {
 
 		List<Event> events = calendarService.getEventForOwner(currentUser
 				.getId());
+		
+		List<EventAttendee> eas = calendarService.getEventAttendeeByAttendeeId(currentUser.getId());
+		
+		List<Event> joinEvents = new ArrayList<Event>();
 
+		for(int i = 0; i < eas.size(); i++){
+			joinEvents.add(eas.get(i).getEvent());
+		}
+		
 		for (int i = 0; i < events.size(); i++) {
 			System.out.println(events.get(i).getSummary());
 		}
 
-		System.out.println("current user id : " + currentUser.getId());
-		System.out.println("current user name : " + currentUser.getName());
 		mav.addObject("events", events);
+		mav.addObject("joinEvents", joinEvents);
 		mav.setViewName("/events/my");
 		return mav;
 	}

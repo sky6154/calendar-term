@@ -14,8 +14,8 @@
 <link href="${resourceUrl}/css/custom.css" rel="stylesheet" />
 <title>Registration Success</title>
 </head>
-<body class="header">
-	<div class="container" align="center">
+<body>
+	<div align="center">
 		<jsp:include page="../includes/header.jsp" />
 		<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
 			<c:if test="${msg != null}">
@@ -26,17 +26,12 @@
 		</sec:authorize>
 		<table border="0">
 			<tr>
-				<td colspan="2" align="center"><h2>Join Succeeded!</h2></td>
+				<td colspan="2" align="center"><h2>Delete Succeeded!</h2></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<h3>Thank you for registering! Here's the review of your
-						details:</h3>
+					<h3>Delete results</h3>
 				</td>
-			</tr>
-			<tr>
-				<td>User ID:</td>
-				<td>${eventsForm.userId}</td>
 			</tr>
 			<tr>
 				<td align="center">Events</td>

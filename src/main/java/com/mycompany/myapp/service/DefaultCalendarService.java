@@ -176,4 +176,9 @@ public class DefaultCalendarService implements CalendarService {
 	public CalendarUser findUserByUserId(String userId) {
 		return userDao.findUserByUserId(userId);
 	}
+
+	@Override
+	public void deleteEventAttendeeByEventId(int eventId) {
+		eventAttendeeDao.deleteEventAttendeeByEventId(eventId);
+	}
 }

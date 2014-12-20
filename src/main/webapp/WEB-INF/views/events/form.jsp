@@ -21,7 +21,6 @@
 	<script type="text/javascript"
 		src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script type="text/javascript">
-	
 		$(function() {
 			$("input[name=chk_all]").click(function() {
 				var chk = $(this).is(":checked");
@@ -34,23 +33,38 @@
 
 		$(function() {
 			$("#joinBtn").click(function() {
-				//var eventArray = new Array();
 				var eventArray = "";
 				$("input[name=chk_info]:checked").each(function(idx, row) {
 					var record = $(row).parents("tr");
 					var val = record[0].innerText;
 
-					eventArray += ":" + val[1];			
+					eventArray += ":" + val[1];
 				});
 
 				$('#idVal').val(eventArray);
 				$('#joinForm').submit();
-			}); 
+			});
+		});
+		
+		$(function() {
+			$("#deleteBtn").click(function() {
+				var eventArray = "";
+				$("input[name=chk_info]:checked").each(function(idx, row) {
+					var record = $(row).parents("tr");
+					var val = record[0].innerText;
+
+					eventArray += ":" + val[1];
+				});
+
+				$('#idVal2').val(eventArray);
+				$('#deleteForm').submit();
+			});
 		});
 	</script>
 </sec:authorize>
-<body>
+<body class="header">
 	<div class="container">
+		<jsp:include page="../includes/header.jsp" />
 		<div class="row">
 			<div class="col-lg-12">
 				<h1>Calendar User List</h1>
@@ -122,18 +136,22 @@
 		</div>
 	</div>
 	<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
-		<form:form action="join" method="post" commandName="eventForm"
+		<form:form action="process" method="post" commandName="eventForm"
 			id="joinForm">
 			<form:hidden path="userId"
 				value="${pageContext.request.userPrincipal.name}" />
 			<form:hidden path="flag" value="join" />
-			
+
 			<form:hidden path="eventList" id="idVal" />
 			<input type="button" id="joinBtn" value="선택한 이벤트 참여">
 
 		</form:form>
 		<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<form:form method="post" commandName="eventForm" id="deleteForm">
+			<form:form action="process" method="post" commandName="eventForm" id="deleteForm">
+			<form:hidden path="userId"
+				value="${pageContext.request.userPrincipal.name}" />
+			<form:hidden path="flag" value="delete" />
+			<form:hidden path="eventList" id="idVal2" />
 				<input type="button" id="deleteBtn" value="선택한 이벤트 삭제">
 			</form:form>
 		</sec:authorize>
