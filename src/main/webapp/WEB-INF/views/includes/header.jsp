@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
@@ -26,9 +27,17 @@
 				<li><a id="navEventsLink" href="${eventsUrl}"><span
 						class="glyphicon glyphicon-th-list"></span> 모든 이벤트 보기</a></li>
 
-				<c:url var="myEventsUrl" value="/events/my" />
-				<li><a id="navMyEventsLink" href="${myEventsUrl}"><span
-						class="glyphicon glyphicon-ok-sign"></span> 나의 이벤트</a></li>
+				<sec:authorize
+					access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
+					<li><form:form id="myEventsLink" action="events/my"
+							method="post" commandName="userInfo">
+							<c:if test="${pageContext.request.userPrincipal.name != null}">
+								<form:hidden path="name"
+									value="${pageContext.request.userPrincipal.name}" />
+							</c:if>
+						</form:form><a href="javascript:eventSubmit()"><span
+							class="glyphicon glyphicon-ok-sign"></span> 나의 이벤트</a></li>
+				</sec:authorize>
 
 				<c:url var="createEventUrl" value="/events/createEvent" />
 				<li><a id="navCreateEventLink" href="${createEventUrl}"><span
@@ -49,8 +58,9 @@
 				<sec:authorize
 					access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
 					<c:url var="signinUrl" value="/users/signin?logout" />
-					<li><form id="logoutForm" action="/calendar-dev/j_spring_security_logout"
-						method="post"></form> <a href="javascript:formSubmit()">로그아웃</a></li>
+					<li><form id="logoutForm"
+							action="/calendar-dev/j_spring_security_logout" method="post"></form>
+						<a href="javascript:formSubmit()">로그아웃</a></li>
 				</sec:authorize>
 			</ul>
 		</div>
@@ -60,5 +70,9 @@
 <script>
 	function formSubmit() {
 		document.getElementById("logoutForm").submit();
+	}
+
+	function eventSubmit() {
+		document.getElementById("myEventsLink").submit();
 	}
 </script>

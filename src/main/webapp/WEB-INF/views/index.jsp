@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page session="false"%>
 <!DOCTYPE html>
 <c:set var="pageTitle" value="Welcome to myCalendar!" scope="request" />
@@ -30,8 +32,7 @@
 				</div>
 			</c:if>
 		</sec:authorize>
-		<sec:authorize
-			access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
+		<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
 				<div class="alert alert-success" id="message">
 					<c:out value="Welcome ${pageContext.request.userPrincipal.name} !" />
@@ -50,15 +51,28 @@
 						</ul>
 					</li>
 				</ul></li>
-			<li><a id="myEventsLink" href="events/my">나의 이벤트</a> - 로그인한 유저가
-				생성한 이벤트와 참여하는 이벤트 목록을 보여줍니다.</li>
-			<li><a id="createEventLink" href="events/createEvent">이벤트 생성</a> - 로그인한
-				유저가 새로운 이벤트를 생성합니다.</li>
+			<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
+				<li><form:form id="myEventsLink" action="events/my"
+						method="post" commandName="userInfo">
+						<c:if test="${pageContext.request.userPrincipal.name != null}">
+							<form:hidden path="name"
+								value="${pageContext.request.userPrincipal.name}" />
+						</c:if>
+					</form:form><a href="javascript:eventSubmit()">나의 이벤트</a> - 로그인한 유저가 생성한 이벤트와
+					참여하는 이벤트 목록을 보여줍니다.</li>
+			</sec:authorize>
+			<sec:authorize access="isAnonymous()">
+				<li><a href="#">나의 이벤트</a> - 로그인한 유저가 생성한 이벤트와
+					참여하는 이벤트 목록을 보여줍니다.</li>
+			</sec:authorize>
+			<li><a id="createEventLink" href="events/createEvent">이벤트 생성</a>
+				- 로그인한 유저가 새로운 이벤트를 생성합니다.</li>
 			<li><a id="signupLink" href="users/signup">회원 가입</a> - 회원 가입을
 				합니다.</li>
 
 			<!-- For guest -->
-			<sec:authorize access="isAnonymous()"> <!-- ifAnyGranted="ROLE_ANONYMOUS" -->
+			<sec:authorize access="isAnonymous()">
+				<!-- ifAnyGranted="ROLE_ANONYMOUS" -->
 				<li><a id="signinLink" href="users/signin">로그인</a> - 로그인을 합니다.</li>
 			</sec:authorize>
 
@@ -78,6 +92,10 @@
 	<script>
 		function formSubmit() {
 			document.getElementById("logoutForm").submit();
+		}
+
+		function eventSubmit() {
+			document.getElementById("myEventsLink").submit();
 		}
 	</script>
 

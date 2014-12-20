@@ -34,22 +34,18 @@
 
 		$(function() {
 			$("#joinBtn").click(function() {
-				var countchecked = $("table input[type=checkbox]:checked").length;
-				var eventArray = new Array();
-				setAttribute('', '');
+				//var eventArray = new Array();
+				var eventArray = "";
 				$("input[name=chk_info]:checked").each(function(idx, row) {
-					//var record = $(row).parents("tr");
-					//console.log(record[0].innerText);
-					var record;
-					eventArray.push($('.eventId:eq(' + idx + ')').text());
+					var record = $(row).parents("tr");
+					var val = record[0].innerText;
 
-					console.log($('.eventId:eq(' + idx + ')').text());				
+					eventArray += ":" + val[1];			
 				});
-				console.log("val : " + eventArray[0]);
-				
-				console.log("length : " + eventArray.length);
-				document.getElementById("joinForm").submit();
-			});
+
+				$('#idVal').val(eventArray);
+				$('#joinForm').submit();
+			}); 
 		});
 	</script>
 </sec:authorize>
@@ -91,8 +87,9 @@
 								<td align="center" rowspan="${fn:length(eventInfo.attendees)}"><input
 									type="checkbox" name="chk_info"></td>
 							</sec:authorize>
-							<td align="center" rowspan="${fn:length(eventInfo.attendees)}"
-								class="eventId"><c:out value="${eventInfo.event.id}" /></td>
+							<td align="center" id="val"
+								rowspan="${fn:length(eventInfo.attendees)}" class="eventId"><c:out
+									value="${eventInfo.event.id}" /></td>
 							<td align="center" rowspan="${fn:length(eventInfo.attendees)}"
 								class="eventSummary"><c:out
 									value="${eventInfo.event.summary}" /></td>
@@ -125,13 +122,13 @@
 		</div>
 	</div>
 	<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
-		<form:form action="join" method="post" commandName="eventForm" id="joinForm">
+		<form:form action="join" method="post" commandName="eventForm"
+			id="joinForm">
 			<form:hidden path="userId"
 				value="${pageContext.request.userPrincipal.name}" />
 			<form:hidden path="flag" value="join" />
 			
-			<form:hidden path="eventList" value="${eventArray}" />
-
+			<form:hidden path="eventList" id="idVal" />
 			<input type="button" id="joinBtn" value="선택한 이벤트 참여">
 
 		</form:form>

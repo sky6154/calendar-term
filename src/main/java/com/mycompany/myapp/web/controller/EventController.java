@@ -1,9 +1,7 @@
 package com.mycompany.myapp.web.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -23,6 +21,7 @@ import com.mycompany.myapp.domain.EventForm;
 import com.mycompany.myapp.domain.EventInfo;
 import com.mycompany.myapp.domain.EventLevel;
 import com.mycompany.myapp.domain.EventsForm;
+import com.mycompany.myapp.domain.UserInfo;
 import com.mycompany.myapp.service.CalendarService;
 
 @Controller
@@ -33,7 +32,8 @@ public class EventController {
 	private CalendarService calendarService;
 
 	@RequestMapping(value = "/createEvent", method = RequestMethod.GET)
-	public String createEvent(Model model) {
+	public String createEvent(@ModelAttribute("userInfo") UserInfo userInfo,
+			Model model) {
 		EventForm eventForm = new EventForm();
 
 		model.addAttribute("eventForm", eventForm);
@@ -71,7 +71,6 @@ public class EventController {
 				} else
 					hour = "" + (Integer.parseInt(hour) + 12);
 
-			
 			cal.set(Integer.parseInt(year) - 1, Integer.parseInt(month) - 1,
 					Integer.parseInt(date), Integer.parseInt(hour),
 					Integer.parseInt(minute));
@@ -88,7 +87,6 @@ public class EventController {
 		calendarService.createEvent(newEvent);
 
 		model.addAttribute("eventForm", eventForm);
-		// model.addAttribute("message", "event페이지 입니다.");
 
 		return "/events/createResult";
 	}
@@ -119,16 +117,27 @@ public class EventController {
 	// event join
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public ModelAndView viewEvent(ModelAndView mav,
-			@ModelAttribute("eventForm") EventsForm eventsForm) {
+			@ModelAttribute("eventsForm") EventsForm eventsForm) {
 
-		List<Integer> eventList = eventsForm.getEventList();
+		List<Integer> eventList = new ArrayList<Integer>();
+		List<String> nameList = new ArrayList<String>();
+		
+		String val = eventsForm.getEventList();
+
+		String temp[] = val.split(":");
+
+		for (int i = 1; i < temp.length; i++) {
+			eventList.add(Integer.parseInt(temp[i]));
+		}
+		
+		for (int i = 0; i < eventList.size(); i++) {
+			nameList.add(calendarService.getEvent(eventList.get(i)).getSummary());
+		}
 
 		if (eventsForm.getFlag().equals("join")) {
 			System.out.println("join 클릭됨");
 			CalendarUser currentUser = calendarService
 					.findUserByUserId(eventsForm.getUserId());
-
-			System.out.println("size : " + eventList.size());
 
 			for (int i = 0; i < eventList.size(); i++) {
 				System.out.println("size : " + eventList.size());
@@ -142,17 +151,38 @@ public class EventController {
 
 			mav.setViewName("/events/joinResult");
 			mav.addObject("msg", "event가 성공적으로 등록되었습니다.");
+			mav.addObject("nameList", nameList);
 		} else if (eventsForm.getFlag().equals("delete")) {
 			for (int i = 0; i < eventList.size(); i++) {
 				calendarService.deleteEvent(eventList.get(i));
 			}
 
-			mav.setViewName("/events/joinResult");
+			mav.setViewName("/events/deleteResult");
 			mav.addObject("msg", "event가 성공적으로 삭제되었습니다.");
-		} else {
-			mav.setViewName("");
-			mav.addObject("msg", "유효하지 않은 페이지입니다.");
+			mav.addObject("nameList", nameList);
 		}
+		
+		return mav;
+	}
+
+	// view
+	@RequestMapping(value = "/my", method = RequestMethod.POST)
+	public ModelAndView myEvent(@ModelAttribute("userInfo") UserInfo userInfo,
+			ModelAndView mav) {
+		CalendarUser currentUser = calendarService.findUserByUserId(userInfo
+				.getName());
+
+		List<Event> events = calendarService.getEventForOwner(currentUser
+				.getId());
+
+		for (int i = 0; i < events.size(); i++) {
+			System.out.println(events.get(i).getSummary());
+		}
+
+		System.out.println("current user id : " + currentUser.getId());
+		System.out.println("current user name : " + currentUser.getName());
+		mav.addObject("events", events);
+		mav.setViewName("/events/my");
 		return mav;
 	}
 }

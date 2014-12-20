@@ -1,19 +1,16 @@
 package com.mycompany.myapp.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "EventsForm")
 public class EventsForm {
-	private List<Integer> eventList;
+	private String eventList;
 	private String userId;
 	private String flag;
 	
 	public EventsForm(){
-		eventList = new ArrayList<Integer>();
+		//eventList = new ArrayList<String>();
 	}
 	
 	@XmlElement
@@ -35,11 +32,11 @@ public class EventsForm {
 	}
 
 	@XmlElement
-	public List<Integer> getEventList() {
+	public String getEventList() {
 		return eventList;
 	}
 
-	public void setEventList(List<Integer> eventList) {
+	public void setEventList(String eventList) {
 		this.eventList = eventList;
 	}
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mycompany.myapp.domain.UserInfo;
 import com.mycompany.myapp.service.CalendarService;
 
 /**
@@ -20,6 +21,8 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Locale locale, ModelAndView mav) {
+		UserInfo userInfo = new UserInfo();
+		mav.addObject("userInfo", userInfo);
 		mav.addObject("message", "myCalendar 서비스에 오신 것을 환영합니다.");
 		mav.setViewName("index");
 		return mav;

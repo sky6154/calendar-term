@@ -35,14 +35,14 @@
 			</tr>
 			<tr>
 				<td>User ID:</td>
-				<td>${eventForm.userId}</td>
+				<td>${eventsForm.userId}</td>
 			</tr>
 			<tr>
-				<td>Events:</td>
-				<c:forEach items="${eventForm.eventList}" var="event"
+				<td align="center">Events</td>
+				<c:forEach items="${nameList}" var="event"
 					varStatus="status">
 					<tr>
-					<td>${event}</td>
+						<td align="center">${event}</td>
 					</tr>
 				</c:forEach>
 			</tr>
