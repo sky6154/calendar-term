@@ -49,6 +49,10 @@ public class CalendarServiceTest {
 			calendarUsers[i].setEmail("user" + i + "@example.com");
 			calendarUsers[i].setPassword("user" + i);
 			calendarUsers[i].setName("User" + i);
+			calendarUsers[i].setLevel(1);
+			calendarUsers[i].setLogin(0);
+			calendarUsers[i].setRecommend(0);
+			calendarUsers[i].setUser_id("user" + i);
 			calendarUsers[i].setId(calendarService.createUser(calendarUsers[i]));
 		}
 		

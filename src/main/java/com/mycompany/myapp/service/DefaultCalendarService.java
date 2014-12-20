@@ -37,6 +37,10 @@ public class DefaultCalendarService implements CalendarService {
 		this.eventDao = eventDao;
 	}
 	
+	public void setEventAttendeeDao(EventAttendeeDao eventAttendeeDao){
+		this.eventAttendeeDao = eventAttendeeDao;
+	}
+	
 	@Autowired
 	public void setUserRoleDao(UserRoleDao userRoleDao) {
 		this.userRoleDao = userRoleDao;
@@ -60,7 +64,7 @@ public class DefaultCalendarService implements CalendarService {
 
 	@Override
 	public int createUser(CalendarUser user) {
-		UserRole userRole = new UserRole(user.getId(), "ROLE_USER");
+		UserRole userRole = new UserRole(user.getUser_id(), "ROLE_USER");
 		this.userRoleDao.add(userRole);
 		return userDao.createUser(user);
 	}
@@ -105,7 +109,7 @@ public class DefaultCalendarService implements CalendarService {
 	/* EventAttendee */
 	@Override
 	public List<EventAttendee> getEventAttendeeByEventId(int eventId) {
-		return null;
+		return eventAttendeeDao.findEventAttendeeByEventId(eventId);
 	}
 
 	@Override
@@ -155,5 +159,21 @@ public class DefaultCalendarService implements CalendarService {
 	public void upgradeEventLevel(Event event) {
 		event.upgradeLevel();
 		eventDao.udpateEvent(event);
+	}
+
+	@Override
+	public List<CalendarUser> getEventUserByEventId(int eventId) {
+		return eventAttendeeDao.findEventUserByEventId(eventId);
+	}
+
+	@Override
+	public void deleteEvent(int eventId) {
+		// TODO Auto-generated method stub
+		eventDao.deleteEvent(eventId);
+	}
+
+	@Override
+	public CalendarUser findUserByUserId(String userId) {
+		return userDao.findUserByUserId(userId);
 	}
 }

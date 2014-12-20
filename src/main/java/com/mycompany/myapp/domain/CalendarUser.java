@@ -1,44 +1,93 @@
 package com.mycompany.myapp.domain;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "CalendarUser")
 public class CalendarUser {
-    private Integer id;
-    private String email;
-    private String password;
+    private Integer id; // auto increment
+    private String user_id;
     private String name;
+    private String password;
+    private String email;
+    private Integer level;
+    private Integer login;
+    private Integer recommend;
+    
 
+    @XmlElement
     public Integer getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	@XmlElement
+	public String getUser_id() {
+		return user_id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	@XmlElement
+	public String getName() {
+		return name;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	@XmlElement
+	public String getPassword() {
+		return password;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    @Override
+	@XmlElement
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@XmlElement
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	@XmlElement
+	public Integer getLogin() {
+		return login;
+	}
+
+	public void setLogin(Integer login) {
+		this.login = login;
+	}
+
+	@XmlElement
+	public Integer getRecommend() {
+		return recommend;
+	}
+
+	public void setRecommend(Integer recommend) {
+		this.recommend = recommend;
+	}
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

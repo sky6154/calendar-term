@@ -2,6 +2,10 @@ package com.mycompany.myapp.domain;
 
 import java.util.Calendar;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "Event")
 public class Event {
     private Integer id;
     private Calendar when;
@@ -12,6 +16,7 @@ public class Event {
     private EventLevel eventLevel;            /* Updated by Assignment 3 */
 
     /* Updated by Assignment 3 - Start */
+    @XmlElement
     public int getNumLikes() {
 		return numLikes;
 	}
@@ -20,6 +25,7 @@ public class Event {
 		this.numLikes = numLikes;
 	}
 	
+	@XmlElement
 	public EventLevel getEventLevel() {
 		return eventLevel;
 	}
@@ -29,22 +35,27 @@ public class Event {
 	}	
     /* Updated by Assignment 3 - End */
     
+	@XmlElement
 	public Integer getId() {
         return id;
     }
     
+	@XmlElement
     public Calendar getWhen() {
         return when;
     }
 
+	@XmlElement
     public String getSummary() {
         return summary;
     }
 
+	@XmlElement
     public String getDescription() {
         return description;
     }
     
+	@XmlElement
     public CalendarUser getOwner() {
         return owner;
     }

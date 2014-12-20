@@ -20,7 +20,7 @@ public class UserRoleDaoJdbc implements UserRoleDao {
 				public UserRole mapRow(ResultSet rs, int rowNum) throws SQLException {
 				UserRole userRole = new UserRole();
 				userRole.setId(rs.getInt("id"));
-				userRole.setUserId(rs.getInt("user_id"));
+				userRole.setUserId(rs.getString("user_id"));
 				userRole.setRole(rs.getString("role"));
 				return userRole;
 			}

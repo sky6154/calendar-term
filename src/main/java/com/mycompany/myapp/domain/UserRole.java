@@ -2,13 +2,13 @@ package com.mycompany.myapp.domain;
 
 public class UserRole {
 	int id;
-	int userId;
+	String userId;
 	String role;
 	
 	public UserRole() {
 	}
 	
-	public UserRole(int userId, String role) {
+	public UserRole(String userId, String role) {
 		super();
 		this.userId = userId;
 		this.role = role;
@@ -22,11 +22,11 @@ public class UserRole {
 		this.id = id;
 	}
 
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

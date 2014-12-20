@@ -105,7 +105,7 @@ public class JdbcEventDao implements EventDao {
 	@Override
 	public List<Event> findEventsByLevel(EventLevel eventLevel) {
 		// TODO Assignment 3
-		// ?¸?ë¡? ë°›ì? ?´ë²¤íŠ¸ ? ˆë²¨ì— ???•´ ?•´?‹¹ ? ˆë²¨ì„ ì§??‹ˆê³? ?ˆ?Š” ?´ë²¤íŠ¸?“¤?„ ë°˜í™˜?•œ?‹¤.
+		// ?ï¿½ï¿½?ï¿½ï¿½ï¿½? ë°›ï¿½? ?ï¿½ï¿½ë²¤íŠ¸ ?ï¿½ï¿½ë²¨ì— ???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ë²¨ì„ ï¿½??ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ë²¤íŠ¸?ï¿½ï¿½?ï¿½ï¿½ ë°˜í™˜?ï¿½ï¿½?ï¿½ï¿½.
 		String sql_query = "select * from events where event_level = ?";
 		return this.jdbcTemplate.query(sql_query, new Object[] {eventLevel}, rowMapper);
 	}
@@ -113,9 +113,15 @@ public class JdbcEventDao implements EventDao {
 	@Override
     public void udpateEvent(Event event) {
 		// TODO Assignment 3
-		// ?¸?ë¡? ë°›ì? ?´ë²¤íŠ¸ê°? ì§??‹Œ ê°? ?•„?“œ ê°’ìœ¼ë¡? ?•´?‹¹ ?´ë²¤íŠ¸ DB ?…Œ?´ë¸? ?‚´ ì¹¼ëŸ¼?„ ?—…?°?´?Š¸ ?•œ?‹¤.
+		// ?ï¿½ï¿½?ï¿½ï¿½ï¿½? ë°›ï¿½? ?ï¿½ï¿½ë²¤íŠ¸ï¿½? ï¿½??ï¿½ï¿½ ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ ê°’ìœ¼ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ë²¤íŠ¸ DB ?ï¿½ï¿½?ï¿½ï¿½ï¿½? ?ï¿½ï¿½ ì¹¼ëŸ¼?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½.
 		String sql_query = "update events set `when` = ?, summary = ?, description = ?, owner = ?, num_likes = ?, event_level = ? where id = ?";
 		Timestamp timestamp = new Timestamp(event.getWhen().getTimeInMillis());
 		this.jdbcTemplate.update(sql_query, new Object[] {timestamp, event.getSummary(), event.getDescription(), event.getOwner().getId(), event.getNumLikes(), event.getEventLevel().intValue(), event.getId()});
+	}
+
+	@Override
+	public void deleteEvent(int eventId) {
+		String sql = "delete from events where id = ?";
+		this.jdbcTemplate.update(sql, new Object[] {eventId});
 	}
 }

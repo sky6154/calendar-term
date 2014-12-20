@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Random;
 
 import org.junit.Before;
@@ -57,7 +58,12 @@ public class DaoJUnitTest {
 			calendarUsers[i].setEmail("user" + i + "@example.com");
 			calendarUsers[i].setPassword("user" + i);
 			calendarUsers[i].setName("User" + i);
+			calendarUsers[i].setLevel(1);
+			calendarUsers[i].setLogin(0);
+			calendarUsers[i].setRecommend(0);
+			calendarUsers[i].setUser_id("user" + i);
 			calendarUsers[i].setId(calendarUserDao.createUser(calendarUsers[i]));
+			
 		}
 		
 		for (int i = 0; i < numInitialNumEvents; i++) {

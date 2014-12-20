@@ -20,7 +20,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Locale locale, ModelAndView mav) {
-		mav.addObject("message", "myCalendar ?„œë¹„ìŠ¤?— ?˜¤?‹  ê²ƒì„ ?™˜?˜?•©?‹ˆ?‹¤.");
+		mav.addObject("message", "myCalendar ì„œë¹„ìŠ¤ì— ì˜¤ì‹  ê²ƒì„ í™˜ì˜í•©ë‹ˆë‹¤.");
 		mav.setViewName("index");
 		return mav;
 	}

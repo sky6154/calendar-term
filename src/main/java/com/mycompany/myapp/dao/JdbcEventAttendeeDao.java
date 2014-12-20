@@ -17,6 +17,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.mycompany.myapp.domain.CalendarUser;
 import com.mycompany.myapp.domain.EventAttendee;
 
 @Repository("eventAttendeeDao")
@@ -24,6 +25,7 @@ public class JdbcEventAttendeeDao implements EventAttendeeDao {
 	private JdbcTemplate jdbcTemplate;
 
 	private RowMapper<EventAttendee> rowMapper;
+	private RowMapper<CalendarUser> userRowMapper;
 
 	@Autowired
 	private EventDao eventDao;
@@ -43,6 +45,13 @@ public class JdbcEventAttendeeDao implements EventAttendeeDao {
 				eventAttendeeList.setAttendee(calendarUserDao.findUser(rs.getInt("attendee")));
 				
 				return eventAttendeeList;
+			}
+		};
+		
+		userRowMapper = new RowMapper<CalendarUser>() {
+			public CalendarUser mapRow(ResultSet rs, int rowNum) throws SQLException {
+				CalendarUser calendarUser = calendarUserDao.findUser(rs.getInt("attendee"));
+				return calendarUser;
 			}
 		};
 	}
@@ -98,5 +107,11 @@ public class JdbcEventAttendeeDao implements EventAttendeeDao {
 		// TODO Assignment 3
 		String sql_query = "delete from events_attendees";
 		this.jdbcTemplate.update(sql_query);
+	}
+
+	@Override
+	public List<CalendarUser> findEventUserByEventId(int eventId) {
+		String sql_query = "select * from events_attendees where event_id = ?";
+		return this.jdbcTemplate.query(sql_query, new Object[] {eventId}, userRowMapper);
 	}
 }
