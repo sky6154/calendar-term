@@ -22,6 +22,8 @@ public interface CalendarService {
     
     public void deleteAllUsers();
     
+    public void updateCalendarUser(CalendarUser calendarUser);
+    
     /* Event */
     public Event getEvent(int eventId);
 

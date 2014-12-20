@@ -29,8 +29,9 @@
 
 				<sec:authorize
 					access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
-					<li><form:form id="myEventsLink" action="/calendar-dev/events/my"
-							method="post" commandName="userInfo">
+					<li><form:form id="myEventsLink"
+							action="/calendar-dev/events/my" method="post"
+							commandName="userInfo">
 							<c:if test="${pageContext.request.userPrincipal.name != null}">
 								<form:hidden path="name"
 									value="${pageContext.request.userPrincipal.name}" />
@@ -47,6 +48,13 @@
 				<li><a id="signupLink" href="${signupUrl}"><span
 						class="glyphicon glyphicon-globe"></span> 회원 가입</a></li>
 
+				<sec:authorize
+					access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
+					<c:url var="updateUrl" value="/users/updateUser" />
+					<li><a id="updateLink" href="${updateUrl}"><span
+							class="glyphicon glyphicon-pencil"></span> 내 정보 수정</a></li>
+				</sec:authorize>
+
 				<!-- For guest -->
 				<sec:authorize access="isAnonymous()">
 					<c:url var="signinUrl" value="/users/signin" />
@@ -60,7 +68,8 @@
 					<c:url var="signinUrl" value="/users/signin?logout" />
 					<li><form id="logoutForm"
 							action="/calendar-dev/j_spring_security_logout" method="post"></form>
-						<a href="javascript:formSubmit()">로그아웃</a></li>
+						<a href="javascript:formSubmit()"><span
+							class="glyphicon glyphicon-open"></span> 로그아웃</a></li>
 				</sec:authorize>
 			</ul>
 		</div>

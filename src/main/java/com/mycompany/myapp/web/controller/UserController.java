@@ -16,7 +16,7 @@ import com.mycompany.myapp.service.CalendarService;
 
 @Controller
 @RequestMapping(value = "/users")
-public class LoginController {
+public class UserController {
 	@Autowired
 	private CalendarService calendarService;
 
@@ -41,6 +41,33 @@ public class LoginController {
 
 	    return "/users/signup";
 	}
+	
+	@RequestMapping(value = "/updateUser", method = RequestMethod.GET)
+	public String update(@ModelAttribute("userInfo") UserInfo userInfo, Model model) {
+		CalendarUser userForm = new CalendarUser();
+		
+		model.addAttribute("userForm", userForm);
+
+	    return "/users/updateUser";
+	}
+	
+	@RequestMapping(value = "/updateResult", method = RequestMethod.POST)
+    public String processUpdate(@ModelAttribute("userInfo") UserInfo userInfo, @ModelAttribute("userForm") CalendarUser userForm, Model model) {
+		CalendarUser user = this.calendarService.findUserByUserId(userForm.getUser_id());
+		user.setEmail(userForm.getEmail());
+		user.setName(userForm.getName());
+		user.setPassword(userForm.getPassword());
+        this.calendarService.updateCalendarUser(user);
+        
+        // for testing purpose:
+//        System.out.println("id: " + userForm.getId());
+//        System.out.println("name: " + userForm.getName());
+//        System.out.println("password: " + userForm.getPassword());
+//        System.out.println("email: " + userForm.getEmail());
+         
+        model.addAttribute("user", user);
+        return "/users/updateResult";
+    }
 	
 	@RequestMapping(value = "/signupResult", method = RequestMethod.POST)
     public String processRegistration(@ModelAttribute("userInfo") UserInfo userInfo, @ModelAttribute("userForm") CalendarUser user, Model model) {

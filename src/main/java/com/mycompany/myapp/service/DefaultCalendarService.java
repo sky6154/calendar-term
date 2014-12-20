@@ -181,4 +181,9 @@ public class DefaultCalendarService implements CalendarService {
 	public void deleteEventAttendeeByEventId(int eventId) {
 		eventAttendeeDao.deleteEventAttendeeByEventId(eventId);
 	}
+
+	@Override
+	public void updateCalendarUser(CalendarUser calendarUser) {
+		userDao.updateCalendarUser(calendarUser);
+	}
 }

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -120,5 +121,12 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 		String sql_query = "select * from calendar_users where user_id = ?";
 		return this.jdbcTemplate.queryForObject(sql_query,
 				new Object[] { userId }, rowMapper);
+	}
+
+	@Override
+	public void updateCalendarUser(CalendarUser calendarUser) {
+		// TODO Auto-generated method stub
+		String sql_query = "update calendar_users set name = ?, password = ?, email = ?";
+		this.jdbcTemplate.update(sql_query, new Object[] {calendarUser.getName(), calendarUser.getPassword(), calendarUser.getEmail()});
 	}
 }

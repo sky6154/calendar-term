@@ -18,4 +18,6 @@ public interface CalendarUserDao {
     public List<CalendarUser> findAllusers();
     
     public void deleteAll();
+    
+    public void updateCalendarUser(CalendarUser calendarUser);
 }
