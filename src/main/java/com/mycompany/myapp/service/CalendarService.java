@@ -37,6 +37,8 @@ public interface CalendarService {
     
     public void deleteEvent(int eventId);
     
+    public void udpateEvent(Event event);
+    
     /* EventAttendee */
     public List<EventAttendee> getEventAttendeeByEventId(int eventId);
     

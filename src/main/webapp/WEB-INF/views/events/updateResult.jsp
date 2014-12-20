@@ -2,12 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <c:url var="resourceUrl" value="/resources" />
 <link href="${resourceUrl}/bootstrap-3.3.1/css/bootstrap.css"
 	rel="stylesheet" />
@@ -17,31 +14,30 @@
 <body class="header">
 	<div class="container" align="center">
 		<jsp:include page="../includes/header.jsp" />
-		<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
-			<c:if test="${msg != null}">
-				<div class="alert alert-success" id="message">
-					<c:out value="${msg}" />
-				</div>
-			</c:if>
-		</sec:authorize>
 		<table border="0">
 			<tr>
-				<td colspan="2" align="center"><h2>Delete Succeeded!</h2></td>
+				<td colspan="2" align="center"><h2>Update Succeeded!</h2></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<h3>Delete results</h3>
+					<h3>result details:</h3>
 				</td>
 			</tr>
 			<tr>
-				<td align="center">Events</td>
-				<c:forEach items="${nameList}" var="event" varStatus="status">
-					<tr>
-						<td align="center">${event}</td>
-					</tr>
-				</c:forEach>
+				<td>event summary</td>
+				<td>${eventForm.summary}</td>
+			</tr>
+			<tr>
+				<td>event description</td>
+				<td>${eventForm.description}</td>
+			</tr>
+			<tr>
+				<td>event time</td>
+				<td>${eventForm.when}</td>
 			</tr>
 		</table>
+		<input type="button" value="Home"
+			onClick="location.href='/calendar-dev/';">
 	</div>
 </body>
 </html>

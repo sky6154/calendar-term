@@ -114,9 +114,9 @@ public class JdbcEventDao implements EventDao {
     public void udpateEvent(Event event) {
 		// TODO Assignment 3
 		// ?��?���? 받�? ?��벤트�? �??�� �? ?��?�� 값으�? ?��?�� ?��벤트 DB ?��?���? ?�� 칼럼?�� ?��?��?��?�� ?��?��.
-		String sql_query = "update events set `when` = ?, summary = ?, description = ?, owner = ?, num_likes = ?, event_level = ? where id = ?";
+		String sql_query = "update events set `when` = ?, summary = ?, description = ? where id = ?";
 		Timestamp timestamp = new Timestamp(event.getWhen().getTimeInMillis());
-		this.jdbcTemplate.update(sql_query, new Object[] {timestamp, event.getSummary(), event.getDescription(), event.getOwner().getId(), event.getNumLikes(), event.getEventLevel().intValue(), event.getId()});
+		this.jdbcTemplate.update(sql_query, new Object[] {timestamp, event.getSummary(), event.getDescription(), event.getId()});
 	}
 
 	@Override

@@ -186,4 +186,9 @@ public class DefaultCalendarService implements CalendarService {
 	public void updateCalendarUser(CalendarUser calendarUser) {
 		userDao.updateCalendarUser(calendarUser);
 	}
+
+	@Override
+	public void udpateEvent(Event event) {
+		eventDao.udpateEvent(event);
+	}
 }

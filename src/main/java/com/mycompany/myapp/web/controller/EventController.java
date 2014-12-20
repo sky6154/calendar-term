@@ -115,7 +115,7 @@ public class EventController {
 		return mav;
 	}
 
-	// event join
+	// event update
 	@RequestMapping(value = "/process", method = RequestMethod.POST)
 	public ModelAndView viewEvent(
 			@ModelAttribute("userInfo") UserInfo userInfo, ModelAndView mav,
@@ -171,23 +171,88 @@ public class EventController {
 	@RequestMapping(value = "/my", method = RequestMethod.POST)
 	public ModelAndView myEvent(@ModelAttribute("userInfo") UserInfo userInfo,
 			ModelAndView mav) {
+
+		EventForm eventForm = new EventForm();
+
 		CalendarUser currentUser = calendarService.findUserByUserId(userInfo
 				.getName());
 
 		List<Event> events = calendarService.getEventForOwner(currentUser
 				.getId());
-		
-		List<EventAttendee> eas = calendarService.getEventAttendeeByAttendeeId(currentUser.getId());
-		
+
+		List<EventAttendee> eas = calendarService
+				.getEventAttendeeByAttendeeId(currentUser.getId());
+
 		List<Event> joinEvents = new ArrayList<Event>();
 
-		for(int i = 0; i < eas.size(); i++){
+		for (int i = 0; i < eas.size(); i++) {
 			joinEvents.add(eas.get(i).getEvent());
 		}
 
+		mav.addObject("eventForm", eventForm);
 		mav.addObject("events", events);
 		mav.addObject("joinEvents", joinEvents);
 		mav.setViewName("/events/my");
+		return mav;
+	}
+
+	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
+	public ModelAndView updateEvent(
+			@ModelAttribute("userInfo") UserInfo userInfo, ModelAndView mav,
+			@ModelAttribute("eventForm") EventForm eventForm) {
+
+		System.out.println(eventForm.getId());
+		
+		mav.addObject("eventForm", eventForm);
+		mav.setViewName("/events/updateEvent");
+		mav.addObject("msg", "event가 성공적으로 수정되었습니다.");
+
+		return mav;
+	}
+	
+	@RequestMapping(value = "/updateResult", method = RequestMethod.POST)
+	public ModelAndView updateResult(
+			@ModelAttribute("userInfo") UserInfo userInfo, ModelAndView mav,
+			@ModelAttribute("eventForm") EventForm eventForm) {
+
+		System.out.println(eventForm.getId());
+
+		Event newEvent = new Event();
+		Calendar cal = Calendar.getInstance();
+
+		String split[] = eventForm.getWhen().split(" "); // date, time, am
+		// or pm
+		String split2[] = split[0].split("/"); // month, day, year
+		String split3[] = split[1].split(":"); // hour, minute
+
+		String year = split2[2];
+		String month = split2[0];
+		String date = split2[1];
+		String hour = split3[0];
+		String minute = split3[1];
+		String noon = split[2];
+
+		if (noon.equals("PM"))
+			if (hour.equals("12")) {
+			} else
+				hour = "" + (Integer.parseInt(hour) + 12);
+
+		cal.set(Integer.parseInt(year) - 1, Integer.parseInt(month) - 1,
+				Integer.parseInt(date), Integer.parseInt(hour),
+				Integer.parseInt(minute));
+		cal.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+
+		newEvent.setId(Integer.parseInt(eventForm.getId()));
+		newEvent.setDescription(eventForm.getDescription());
+		newEvent.setSummary(eventForm.getSummary());
+		newEvent.setWhen(cal);
+		
+		calendarService.udpateEvent(newEvent);
+		
+		mav.addObject("eventForm", eventForm);
+		mav.setViewName("/events/updateResult");
+		mav.addObject("msg", "event가 성공적으로 수정되었습니다.");
+
 		return mav;
 	}
 }

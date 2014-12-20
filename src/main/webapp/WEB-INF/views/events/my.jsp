@@ -16,6 +16,28 @@
 <link href="${resourceUrl}/css/custom.css" rel="stylesheet" />
 <title>Insert title here</title>
 </head>
+
+<sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
+	<script type="text/javascript"
+		src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$("#updateBtn").click(function() {
+				var eventArray = "";
+				$("input[name=chk]:checked").each(function(idx, row) {
+					var record = $(row).parents("tr");
+					var val = record[0].innerText;
+
+					eventArray = val[1];
+				});
+
+				$('#idVal').val(eventArray);
+				$('#updateForm').submit();
+			});
+		});
+	</script>
+</sec:authorize>
+
 <body class="header">
 	<div class="container">
 		<jsp:include page="../includes/header.jsp" />
@@ -30,15 +52,22 @@
 				<sec:authorize
 					access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
 					<table style="width: 100%;">
-						<td align="center">event id</td>
-						<td align="center">summary</td>
-						<td align="center">time</td>
-						<td align="center">description</td>
-						<td align="center">likes</td>
-						<td align="center">level</td>
-						<td align="center">count</td>
+						<tr>
+							<td align="center">select</td>
+							<td align="center">event id</td>
+							<td align="center">summary</td>
+							<td align="center">time</td>
+							<td align="center">description</td>
+							<td align="center">likes</td>
+							<td align="center">level</td>
+							<td align="center">count</td>
+						</tr>
 						<c:forEach items="${events}" var="event" varStatus="status">
 							<tr>
+								<sec:authorize
+									access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
+									<td align="center"><input type="radio" name="chk"></td>
+								</sec:authorize>
 								<td align="center" class="eventId"><c:out
 										value="${event.id}" /></td>
 								<td align="center" class="eventSummary"><c:out
@@ -53,8 +82,14 @@
 										value="${event.eventLevel}" /></td>
 								<td align="center" class="eventCount"><c:out
 										value="${status.count}" /></td>
+							</tr>
 						</c:forEach>
 					</table>
+					<form:form action="updateEvent" method="post"
+						commandName="eventForm" id="updateForm">
+						<form:hidden path="id" id="idVal" />
+						<input type="button" id="updateBtn" value="선택한 이벤트 수정">
+					</form:form>
 				</sec:authorize>
 			</div>
 
@@ -89,6 +124,7 @@
 										value="${event.eventLevel}" /></td>
 								<td align="center" class="eventCount"><c:out
 										value="${status.count}" /></td>
+							</tr>
 						</c:forEach>
 					</table>
 				</sec:authorize>
