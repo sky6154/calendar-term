@@ -1,7 +1,12 @@
 package com.mycompany.myapp.domain;
 
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 @XmlRootElement(name = "CalendarUser")
 public class CalendarUser {
@@ -10,11 +15,11 @@ public class CalendarUser {
     private String name;
     private String password;
     private String email;
+    
     private Integer level;
     private Integer login;
     private Integer recommend;
     
-
     @XmlElement
     public Integer getId() {
 		return id;
